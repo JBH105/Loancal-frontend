@@ -1,0 +1,652 @@
+label {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+
+
+
+.ag-header-cell {
+  background-color: rgb(198,224,180) /* Your desired background color for headers */;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+  
+}
+
+.thick-border {
+  border-right: 2px solid black;
+  white-space: normal;
+  line-height: normal;
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+   /* Example of a thicker border */
+}
+
+.wrap-header-text {
+  white-space: normal;
+  line-height: normal; /* Adjust line height if needed */
+}
+.container2 {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.sharkcage{
+  display: flex;
+}
+
+.container3 {
+  width: 35%;
+  margin-left: 5%;
+  padding: 20px;
+  padding-left: 5%;
+  margin-top: 50px; /* Added padding for internal spacing */
+  border-radius: 5px;
+  box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.3); 
+}
+
+.container4 {
+  background-color: rgb(198,224,180);
+  width: 35%;
+  margin-left: 28%;
+  padding: 20px;
+  padding-left: 5%;
+  margin-top: 50px; /* Added padding for internal spacing */
+  border-radius: 5px;
+  box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.3); 
+}
+
+.form-outer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.form-outer .form-group {
+  width: 50%;
+  padding: 0 15px;
+  margin-bottom: 15px;
+}
+
+.type {
+  padding: 0 15px;
+  width: 100%;
+}
+
+.type select#recordType {
+  display: block;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  margin-bottom: 4px;
+}
+
+
+.form-group input, .form-group select, .form-group button {
+  width: 100%;
+  padding: 10px;
+}
+
+h1{
+  margin-left:33%;
+ 
+}
+
+h3{
+  margin-top:-4%;
+}
+.newrecordbutton{
+  margin-bottom: 15px;
+  padding: 7px;
+  gap: 15px;
+  display: flex;
+}
+.submit{
+  margin-left: 15px;
+  margin-bottom: 0.2%;
+  width: 100px;
+  padding: 10px;
+  background-color: rgb(238, 177, 65);
+  border: none;
+  color:"#fff"
+}
+
+input:hover{
+  background-color: rgba(245, 245, 220, 0.603);
+}
+
+select:hover{
+  background-color: rgba(245, 245, 220, 0.603);
+}
+
+select:active{
+  background-color: rgba(88, 88, 88, 0.39);
+}
+
+button.selected{
+  background-color: rgb(198,224,180);
+}
+button:active{
+  background-color: rgba(88, 88, 88, 0.39);
+}
+
+
+.recordContainer{
+  height: 100vh;
+  width: 100%;
+
+}
+.homeContainer{
+background-color: rgb(181, 181, 181); /*test color*/
+height: 100%;
+width: 100%;
+margin-top: -22px;
+}
+
+
+
+
+
+
+.payment-container {
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+}
+.payment-record {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  
+}
+.record-field {
+  display: block;
+  margin-bottom: 5px;
+}
+.record-label {
+  font-weight: bold;
+}
+
+.button-container {
+  margin-top: 2%;
+}
+
+
+/*.ag-theme-balham{*/
+/*  --ag-borders: 1px;*/
+/*}*/
+
+/*.grid-cell-centered {*/
+/*  text-align: center;*/
+/*}*/
+
+/*.ag-cell*/
+/*   {*/
+/*    border-right: 1px solid black;*/
+/*      border-right-color: black;*/
+/*      border-right-width: 1px ;*/
+/*      border-right-style: solid ;*/
+/*    }*/
+
+
+/*.ag-header-cell,  .ag-header-group-cell {*/
+/*      border-right: 1px solid rgba(0, 0, 0, 0.454);*/
+/*      border-bottom: 1px solid rgba(0, 0, 0, 0.454);*/
+/*      */
+/*    }*/
+
+/*.App {*/
+/*    text-align: center;*/
+/*  }*/
+
+/*  .sharkspacer{*/
+/*    margin-left: 420%;*/
+/*  }*/
+
+/*  .top-middle-button3{*/
+/*    margin-right: 70%;*/
+/*  }*/
+/*  .helpSpacer {*/
+/*    margin-left: 850px; !* Pushes the Help button to the far right *!*/
+/*    !* Additional styling if needed *!*/
+/*}*/
+
+/*  .top-left-button {*/
+/*    display: flex; !* Enables Flexbox for the container *!*/
+/*    align-items: center; !* Align items vertically *!*/
+/*    justify-content: flex-start;*/
+/*    position: absolute; !* or 'absolute' depending on your layout *!*/
+/*    top: 1px;*/
+/*    margin-left: 4.5%; !* Adjust margin as needed *!*/
+/*    !* Add other styles like padding, font, background, etc. as per your design *!*/
+/*  }*/
+/*  .top-left-button2 {*/
+/*    position: absolute; !* or 'absolute' depending on your layout *!*/
+/*    top: 1px;*/
+/*    */
+
+/*    margin-left: 100px; !* Adjust margin as needed *!*/
+/*    !* Add other styles like padding, font, background, etc. as per your design *!*/
+/*  }*/
+/*  .monthbuttons {*/
+/*    display: flex; !* Enables Flexbox for the container *!*/
+/*    align-items: center; !* Align items vertically *!*/
+/*    justify-content: flex-start;*/
+/*    position: absolute; !* or 'absolute' depending on your layout *!*/
+/*    top: 1px;*/
+
+/*    margin-left: -30%;*/
+/*    margin-top: 6.5%;*/
+/*    !* Adjust margin as needed *!*/
+/*    !* Add other styles like padding, font, background, etc. as per your design *!*/
+/*  }*/
+
+/*  .topbuttons {*/
+/*    display: flex; !* Enables Flexbox for the container *!*/
+/*    align-items: center; !* Align items vertically *!*/
+/*    justify-content: flex-start;*/
+/*    position: absolute; !* or 'absolute' depending on your layout *!*/
+/*    top: 1px;*/
+
+/*    margin-left: -30%;*/
+/*    margin-top: 3.5%;*/
+/*   */
+/*    !* Adjust margin as needed *!*/
+/*    !* Add other styles like padding, font, background, etc. as per your design *!*/
+/*  }*/
+
+/*  .yearbuttons {*/
+/*    display: flex; !* Enables Flexbox for the container *!*/
+/*    align-items: center; !* Align items vertically *!*/
+/*    justify-content: flex-start;*/
+/*    position: absolute; !* or 'absolute' depending on your layout *!*/
+/*    top: 1px;*/
+
+/*    margin-left: -30%;*/
+/*    margin-top: 9.5%;*/
+/*    !* Adjust margin as needed *!*/
+/*    !* Add other styles like padding, font, background, etc. as per your design *!*/
+/*  }*/
+
+/*  .left-side-bar {*/
+/*    !* Add styles for the left-side bar *!*/
+/*    width: 30%; !* Example width *!*/
+/*    padding: 10px;*/
+/*    margin-right: 2%;*/
+/*    !* Add more styles as needed *!*/
+/*}*/
+
+/*.main-container {*/
+/*  display: flex; !* Enables Flexbox *!*/
+/*}*/
+
+/*.buttons-container {*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*  align-items: center;*/
+/*}*/
+
+/*  */
+
+/*  .App-logo {*/
+/*    height: 40vmin;*/
+/*    pointer-events: none;*/
+/*  }*/
+
+/*  @media (prefers-reduced-motion: no-preference) {*/
+/*    .App-logo {*/
+/*      animation: App-logo-spin infinite 20s linear;*/
+/*    }*/
+/*  }*/
+/*  .header-container {*/
+/*    margin-top: 20px;*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    align-items: center;*/
+/*}*/
+/*  .App-header {*/
+/*    background-color: #0B132B;*/
+/*    min-height: 200vh;*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*    font-size: calc(10px + 2vmin);*/
+/*    color: #1C2541;*/
+/*  }*/
+
+/*  .App-link {*/
+/*    color: #0B132B;*/
+/*  }*/
+
+/*  @keyframes App-logo-spin {*/
+/*    from {*/
+/*      transform: rotate(0deg);*/
+/*    }*/
+/*    to {*/
+/*      transform: rotate(360deg);*/
+/*    }*/
+/*  }*/
+
+/*  body {*/
+/*    font-family: 'Arial', sans-serif;*/
+/*    background-color: #1C2541;*/
+/*  }*/
+
+/*  .recordBlock1 {*/
+/*    color: #000000;*/
+/*    !* background-color: #e1ff1d; *!*/
+/*    text-emphasis-color: #000000;*/
+/*  }*/
+/*  .recordBlock3 {*/
+/*    border: 5px solid #c9c9c93f;*/
+/*    box-shadow: 0px 0px 25px rgba(255, 255, 255, 0.363);*/
+/*    width:600px;*/
+/*   margin-top: 100px;*/
+/*   border-radius: 10px;*/
+/*  }*/
+
+/*  .recordBlock2:hover {*/
+/*    background-color: #efff0b5f; !* Example: Changes background color on hover *!*/
+/*    cursor: pointer; !* Changes the cursor to indicate it's clickable *!*/
+/*    !* Add any other hover styles you want here *!*/
+/*}*/
+/*.ag-header-cell-label {*/
+/*  justify-content: center !important;*/
+/*  font-weight: 700;*/
+/*  color: #000000;*/
+/*}*/
+
+/*.ag-header-group-cell {*/
+/*  justify-content: center !important;*/
+/*  font-weight: 700;*/
+/*  color: #000000;*/
+/*}*/
+
+/*.ag-cell {*/
+/*  display: flex;*/
+/*  justify-content: center;*/
+/*  align-items: center;*/
+/*  white-space: normal !important;*/
+/*  line-height: 1.5; !* Adjust for better text readability *!*/
+/*}*/
+
+
+/*  .recordContainer4{*/
+/*    margin-top: 40px;*/
+/*    margin-left: auto;*/
+/*    height: 600px;*/
+/*    width:1050px;*/
+/*    background-color: #1C2541;*/
+/*    box-shadow: 0px 0px 25px rgba(255, 255, 255, 0.363);*/
+/*    overflow-y: auto;*/
+/*    border-radius: 10px;*/
+
+/*  }*/
+
+/*  .searchContainer button {*/
+/*    !* margin-right: 10px;  *!*/
+/*    align-items: center;*/
+/*}*/
+/*.searchContainer {*/
+/*  margin-top: 20px;*/
+/*  display: flex; !* Enables Flexbox *!*/
+/*  justify-content: center; !* Centers items horizontally in the container *!*/
+/*  height: 1vh; !* Sets the height of the container to 100% of the viewport height *!*/
+/*  */
+/*}*/
+
+/*  .container {*/
+/*    width: 75vw;*/
+/*    margin-top: 90px;*/
+/*    background-color: #1C2541;*/
+/*    border-radius: 8px;*/
+/*    box-shadow: 0 0 10px #1C2541;*/
+/*    padding: 20px;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*  }*/
+
+/*  .container2 {*/
+/*    width: 50vw;*/
+/*    margin-top: 75px;*/
+/*    background-color: #ffffff; !* Consider a soft off-white color for less harsh contrast *!*/
+/*    border-radius: 8px;*/
+/*    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1); !* Softer shadow for depth *!*/
+/*    padding: 20px;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*    text-align: center; !* Center align the text for better presentation *!*/
+/*    font-family: 'Arial', sans-serif; !* Improve typography *!*/
+/*    color: #333; !* Darker text color for better readability *!*/
+/*    max-width: 600px; !* Limit maximum width for better structure on large screens *!*/
+/*    margin-left: auto; !* Center align the container *!*/
+/*    margin-right: auto;*/
+/*    box-sizing: border-box; !* Include padding and border in the width *!*/
+/*}*/
+
+
+
+
+/*  .sharkcage{*/
+/*    margin-top: 10px;*/
+/*    display:flex;*/
+/*    justify-content: center; */
+/*  }*/
+
+/*  h1 {*/
+/*    text-align: center;*/
+/*    font-family: 'arial';*/
+/*    font-weight: 400;*/
+/*    margin-top: 6%;*/
+/*    color: #363333;*/
+/*  }*/
+/*  h2{*/
+/*    text-align: center;*/
+/*    font: arial;*/
+/*    font-weight: 100;*/
+/*    font-size: 20px;*/
+/*    color: #000000;*/
+/*  }*/
+/*  h3{*/
+/*    color: #c9c9c9;*/
+/*    font-family: 'Roboto', sans-serif;*/
+/*    margin-left: 2%;*/
+/*    margin-right: 2%;*/
+/*  }*/
+/*  h4{*/
+/*    margin-top: 100px;*/
+/*    margin-left: 13%;*/
+/*    color:aqua;*/
+/*    font-family: 'Roboto', sans-serif;*/
+/*    font-size: 30px;*/
+/*  }*/
+
+/*  h6 {*/
+/*    text-align: center;*/
+/*    font-family: 'Roboto', sans-serif;*/
+/*    color: #c9c9c9;*/
+/*  }*/
+/*  h5 {*/
+/*    text-align: center;*/
+/*    margin-top: 0px;*/
+/*    font-family: 'Roboto', sans-serif;*/
+/*    color: #c9c9c9;*/
+/*  }*/
+
+/*  form{*/
+/*    text-align: center;*/
+/*  }*/
+/*  .form-group {*/
+/*    margin-bottom: 20px;*/
+/*    font-weight: 100;*/
+/*    margin-left: 15%;*/
+/*  }*/
+
+/*  .form-group2 {*/
+/*    margin-bottom: 20px;*/
+/*    font-weight: 100;*/
+/*    margin-left:-8%;*/
+/*  }*/
+/*  .form-group3 {*/
+/*    margin-bottom: 20px;*/
+/*    font-weight: 100;*/
+/*    margin-left: -12%;*/
+/*  }*/
+/*  .form-group4 {*/
+/*    margin-bottom: 20px;*/
+/*    font-weight: 100;*/
+/*    margin-left: 5.5%;*/
+/*  }*/
+/*  .form-group5 {*/
+/*    margin-bottom: 20px;*/
+/*    font-weight: 100;*/
+/*    margin-left: 5%;*/
+/*  }*/
+/*  .form-group6 {*/
+/*    margin-bottom: 20px;*/
+/*    font-weight: 100; */
+/*    margin-left: -16%;*/
+/*  }*/
+/*  .form-group7 {*/
+/*    margin-bottom: 20px;*/
+/*    font-weight: 100;*/
+/*    margin-left: -23%;*/
+/*  }*/
+/*  .form-group8 {*/
+/*    margin-bottom: 20px;*/
+/*    font-weight: 100;*/
+/*  }*/
+/*  .form-group9 {*/
+/*    margin-top: 20px;*/
+/*    margin-bottom: 20px;*/
+/*    font-weight: 100;*/
+/*    margin-left: -13%;*/
+/*  }*/
+
+/*  .form-group16 {*/
+/*    margin-bottom: 20px;*/
+/*    font-weight: 100; */
+/*    margin-left: -20%;*/
+/*  }*/
+
+/*  .form-group22 {*/
+/*    margin-bottom: 20px;*/
+/*    font-weight: 100;*/
+/*    margin-left: 5%;*/
+/*  }*/
+
+/*  .client-name-row {*/
+/*    display: flex;*/
+/*    align-items: center; !* Aligns items vertically in the center *!*/
+/*    gap: 5px; !* Optional: adds space between the label and the dropdown *!*/
+/*    margin-left: 31%;*/
+/*    margin-top: 4%;*/
+/*    margin-bottom: 4%;*/
+/*}*/
+
+/*.client-name-row2 {*/
+/*  display: flex;*/
+/*  align-items: center; !* Aligns items vertically in the center *!*/
+/*  gap: 5px; !* Optional: adds space between the label and the dropdown *!*/
+/*  margin-left: 36.5%;*/
+/*  margin-top: 4%;*/
+/*  margin-bottom: 4%;*/
+/*}*/
+
+
+
+
+/*input{*/
+/*  text-align: left;*/
+/*}*/
+
+/*  label {*/
+/*    */
+/*    font-weight: 500;*/
+/*    font: times;*/
+/*    color: #000000;*/
+/*    text-align: right;*/
+/*    margin-left: 1%;*/
+/*  }*/
+
+
+/*  .form-control {*/
+/*    width: 100%;*/
+/*  }*/
+
+/*  textarea {*/
+/*    resize: vertical;*/
+/*  }*/
+
+/*  button {*/
+/*    background-color: #c9c9c9;*/
+/*    color: #000000;*/
+/*    font: arial; !* Updated font-family *!*/
+/*    font-size: 12px; !* You can adjust the size as needed *!*/
+/*    font-weight: 600;*/
+/*    border-color: #a8a8a8;*/
+/*    border-width: 2px; !* Adjusted border width *!*/
+/*    border-style: solid; !* Added border style *!*/
+/*    padding: 10px 15px;*/
+/*    */
+/*    cursor: pointer;*/
+/*    margin-top: 10px;*/
+/*    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.548); */
+/*    margin-right: 10px;*/
+/*    transition: background-color 0.1s ease;*/
+/*}*/
+/*button.selected {*/
+/*  background-color: #4b9eb3;*/
+/*  */
+/*  */
+/*}*/
+
+/*button:hover {*/
+/*  background-color: #b1efff;*/
+/*} */
+/*button:active{*/
+/*  background-color:  #047692;*/
+/*  transition: background-color 0.3s ease;*/
+/*  */
+/*}*/
+
+
+
+/* */
+
+/*  body{*/
+/*    background-color: #f9f9f9;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: center;}*/
+
+/*    .simple-table {*/
+/*      width: 100%;*/
+/*      border-collapse: collapse;*/
+/*      margin-top: 20px;*/
+/*    }*/
+
+/*    .simple-table th, .simple-table td {*/
+/*      border: 1px solid #ddd;*/
+/*      padding: 8px;*/
+/*      text-align: left;*/
+/*    }*/
+
+/*    .simple-table th {*/
+/*      background-color: #f2f2f2;*/
+/*    }*/
+
+/*.ag-cell {*/
+/*      align-items: center;*/
+/*      justify-content: center;*/
+/*    }*/
+
+/*.radio {*/
+/*  margin-top: 2%;*/
+/*  margin-bottom: 3%;*/
+/*}*/
+

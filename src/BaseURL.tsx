@@ -1,0 +1,1 @@
+export default "https://stingray-app-kdav8.ondigitalocean.app";
