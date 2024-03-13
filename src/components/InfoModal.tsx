@@ -27,8 +27,7 @@ export default function InfoModal({ id }: any) {
         const fetchData = async () => {
             setLoading(true);
             const payload = {
-                "Months": [],
-                "Years": [],
+
                 "ActiveStatus": "both",
                 "ClientId": id?.ClientId,
                 "TdyToggle": false,
@@ -54,15 +53,17 @@ export default function InfoModal({ id }: any) {
                 const totalRemaining: number = data.results.filter((item: any) => item.PaidStatus !== 1).reduce((total: number, item: any) => total + item.PrincipalRemaining, 0);
                 const unpaidLoanIds: string[] = resData.filter((item: any) => item.PaidStatus === 0).map((result: any) => result.LoanId);
                 const totalprincipalpaid: number = data.results.filter((item: any) => item.PaidStatus == 1).reduce((total: number, item: any) => total + item.LoanAmount, 0);
+
                 const filteredId = resData.filter((item: any) => item.LoanId === id.LoanID && item.PaidStatus == 1);
                 const principalPaymentRecs: number[] = filteredId.map((item: any) => item.PrincipalPaymentRec);
                 const principalRemaining: number[] = filteredId.map((item: any) => item.PrincipalRemaining);
-                
+
 
                 setPrincipalPaymentRecs(principalPaymentRecs);
                 setPrincipalRemaining(principalRemaining);
                 setLoanIds(unpaidLoanIds);
                 setUserInfo(resData);
+                console.log(totalloanamount, totalinterestAmount, totalRemaining, totalprincipalpaid );
                 setTotal({ totalloanamount, totalinterestAmount, totalRemaining, totalprincipalpaid })
             } catch (error) {
                 console.error("Failed to fetch data: ", error);
@@ -152,11 +153,12 @@ export default function InfoModal({ id }: any) {
                         </tr>
                         <tr>
                             <td>Interest Payment Received</td>
-                            <td>{id.PaymentRecAmount}</td>
+                            <td>{id.InterestRate}</td>
                         </tr>
+
                         <tr>
                             <td>Remaining Principal</td>
-                            <td>{id.remainingPrinciple}</td>
+                            <td>   {id.remainingPrinciple}</td>
                         </tr>
                         <tr>
                             <td>Total Principal Paid</td>
