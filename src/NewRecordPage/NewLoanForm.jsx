@@ -38,34 +38,47 @@ function NewLoanForm({ setAddData }) {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     const apiEndpoint = `${BaseURL}/api/new-loan`;
     try {
       const response = await fetch(apiEndpoint, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json", 
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData), 
+        body: JSON.stringify(formData),
       });
       console.log("response", response);
       if (response.status === 200) {
         setAddData(false);
+        resetForm();
       }
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const result = await response.json(); // Assuming the server responds with JSON data
-      console.log(result); // Process your result here
+      const result = await response.json();
+      console.log(result);
       navigate("/");
 
-      // Handle success, e.g., show a success message, redirect, etc.
     } catch (error) {
       console.error("Error:", error);
-      // Handle errors, e.g., show an error message
     }
   };
+
+  const resetForm = () => {
+    setFormData({
+      InterestAmount: "",
+      IssueDate: getNewYorkDateISO(),
+      LoanAmount: "",
+      LoanLength: "",
+      Name: "",
+      PaymentFrequency: "Monthly",
+      Type: "New",
+      ClientId: selectedClient,
+    });
+  };
+
 
   function handleLoanSelect(selectedValue) {
     setSelectedLoan(selectedValue);
@@ -147,7 +160,7 @@ function NewLoanForm({ setAddData }) {
 
           <div className="form-group">
             <label htmlFor="PaymentFrequency">
-              Interest Payment Frequency{" "}
+              Interest Payment Frequency
             </label>
             <select
               id="PaymentFrequency"
@@ -186,17 +199,26 @@ function NewLoanForm({ setAddData }) {
               required
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="LoanId">Loan ID</label>
-            <input
-              type="text"
-              id="LoanId"
-              placeholder=""
-              name="LoanId"
-              value={formData.LoanId}
-              onChange={handleChange}
-            />
-          </div>
+          {
+            formData.Type === "New" ?
+              (
+                <>
+                  <div className="form-group">
+                    <label htmlFor="LoanId">Loan ID</label>
+                    <input
+                      type="text"
+                      id="LoanId"
+                      placeholder=""
+                      name="LoanId"
+                      value={formData.LoanId}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </>
+              )
+              : null
+          }
+
         </div>
         <button className="submit" type={"submit"}>
           Submit

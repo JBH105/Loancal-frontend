@@ -11,6 +11,7 @@ import DeletePaymentModal from './DeletePaymentModal';
 import BaseURL from '../BaseURL'
 import { Modal } from 'antd';
 import InfoModal from '../components/InfoModal';
+import { RowDoubleClickedEvent } from 'ag-grid-community';
 
 function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selectedStatus, tdyToggle, setAddData, addData }: any) {
     const [rowData, setRowData] = useState([]);
@@ -93,6 +94,7 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
                 'border-bottom': '1px solid'
             }, cellDataType: 'date',
             headerClass: 'wrap-header-text',
+            onCellDoubleClicked: handlePaymentReceivedDateDoubleClick
         },
         {
             headerName: 'Closed', field: 'Closed', filter: true, editable: (params) => {
@@ -111,18 +113,21 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
         let maturityDate = new Date(issueDate);
 
         if (paymentFreq === "Monthly") {
-            // Add the loanLength in months to the issueDate
             maturityDate.setMonth(maturityDate.getMonth() + loanLength);
         } else if (paymentFreq === "Weekly") {
-            // Add the loanLength in weeks to the issueDate
-            // 7 days per week
             maturityDate.setDate(maturityDate.getDate() + (loanLength * 7));
         } else {
             throw new Error("Invalid payment frequency. Please use 'Monthly' or 'Weekly'.");
         }
-
-        // Return the maturity date as a string in YYYY-MM-DD format
         return maturityDate.toISOString().split('T')[0];
+    }
+
+
+    function handlePaymentReceivedDateDoubleClick(params: RowDoubleClickedEvent) {
+        const currentDate = new Date().toISOString().split('T')[0];
+        console.log(currentDate);
+        params.data.PaymentReceivedDate = currentDate;
+        params.api.applyTransaction({ update: [params.data] });
     }
 
 
@@ -147,7 +152,6 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
             remainingPrinciple: item.PrincipalRemaining != null ? `$${item.PrincipalRemaining}` : item.PrincipalRemaining,
             Notes: item.Notes,
             PrinciplePaymentReceived: item.PrincipalPaymentRec != null ? `$${item.PrincipalPaymentRec}` : item.PrincipalPaymentRec
-
         }));
     };
 
@@ -158,14 +162,16 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
 
                     const apiUrl = `${BaseURL}/api/filter-data`;
                     let StatusData
+                    let YearData
+                    let MonthData
 
                     if (selectedStatus === "") {
                         StatusData = "both"
                     }
                     // Prepare the request body
                     const requestBody = {
-                        Months: selectedMonths ? [selectedMonths] : [],
-                        Years: selectedYears ? [selectedYears] : [],
+                        Months: selectedMonths ? [selectedMonths] : MonthData,
+                        Years: selectedYears ? [selectedYears] : YearData,
                         ActiveStatus: selectedStatus ? selectedStatus : StatusData,
                         ClientId: selectedClient,
                         TdyToggle: days,
@@ -196,8 +202,6 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
                                 } else if (a.PaidStatus && !b.PaidStatus) {
                                     return 1; // b (not paid) comes before a (paid)
                                 } else {
-                                    // If both have the same paid status, sort by date from newest to oldest
-                                    // Assuming PaymentDate is a date string or a Date object that can be compared directly
                                     const dateA: any = new Date(a.IssueDate);
                                     const dateB: any = new Date(b.IssueDate);
                                     return dateB - dateA; // Sorts descending by date
@@ -214,18 +218,15 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
             };
             fetchData();
         }
-    }, [selectedMonths, selectedYears, gridApi, selectedStatus, selectedClient, updateCount, addData]);
+    }, [selectedMonths,days, selectedYears, gridApi, selectedStatus, selectedClient, updateCount, addData]);
 
     const onGridReady = useCallback((params: any) => {
         setGridApi(params.api);
     }, []);
 
     const handleConfirmDelete = () => {
-        // Perform the update logic here using currentEdit
         console.log("Delete Confirmed", currentEdit);
         deletePayment(currentEdit)
-
-        // Close the modal
         setIsDeleteModalOpen(false);
 
     };
@@ -240,9 +241,8 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
         console.log("Update Confirmed", currentEdit);
         console.log("Next Interest Payment:", nextInterestPayment);
         console.log("Next Interest Payment2:", nextInterestPayment);
-        // You can now use nextInterestPayment as part of your update logic
 
-        updatePayment(currentEdit, nextInterestPayment); // Modify updatePayment to accept this value
+        updatePayment(currentEdit, nextInterestPayment);
         setIsModalOpen(false);
     };
 
@@ -255,10 +255,6 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
         if (event.column.colDef.field === "Closed") {
             setCurrentEdit(event);
             setIsModalOpen(true);
-        }
-
-        else {
-
         }
     }, []);
 
@@ -290,8 +286,6 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
 
     async function updatePayment(event: any, newExpectedPayment: any) {
         try {
-
-            // Construct the API URL
             const apiUrl = `${BaseURL}/api/update-payment`;
 
             const formatDate = (date: any) => {
@@ -313,11 +307,8 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
                 Notes: event.data.Notes,
                 PrincipalRemaining: event.data.remainingPrinciple != null ? parseFloat(event.data.remainingPrinciple.replace("$", "")) : null,
                 NewExpectedPayment: newExpectedPayment
-
-
             };
 
-            // Make the POST request
             const response = await fetch(apiUrl, {
                 method: 'PUT',
                 headers: {
@@ -342,6 +333,7 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
             event.colDef.field === "LoanID") {
             setId(
                 {
+                    Closed: event.data.Closed,
                     ClientId: event.data.ClientId,
                     LoanID: event.data.LoanID,
                     ClientName: event.data.Name,
@@ -350,7 +342,9 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
                     PaymentFrequency: event.data.PaymentFreq,
                     Due: event.data.Due,
                     InterestRate: event.data.InterestRate,
-                    PrincipalPaymentRec: event.data.PrincipalPaymentRec
+                    remainingPrinciple: event.data.remainingPrinciple,
+                    PaymentRecAmount:event.data.PaymentRecAmount,
+                
                 })
             setOpen(true)
         }

@@ -2,18 +2,23 @@ import React, { useEffect, useState } from 'react';
 import BaseURL from '../BaseURL';
 import { log } from 'util';
 
-export default function InfoModal({ id}: any) {
+export default function InfoModal({ id }: any) {
     const [userInfo, setUserInfo] = useState<any>(null);
-
     const [total, setTotal] = useState<{
         totalloanamount: number;
         totalinterestAmount: number;
         totalRemaining: number;
+        totalprincipalpaid: number;
     }>({
         totalloanamount: 0,
         totalinterestAmount: 0,
-        totalRemaining: 0
+        totalRemaining: 0,
+        totalprincipalpaid: 0
     });
+
+    const [principalPaymentRecs, setPrincipalPaymentRecs] = useState<number[]>();
+    const [principalRemaining, setPrincipalRemaining] = useState<number[]>();
+
     const [loanIds, setLoanIds] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -45,14 +50,20 @@ export default function InfoModal({ id}: any) {
                 const resData = data.results;
 
                 const totalloanamount: number = data.results.reduce((total: number, item: any) => total + item.LoanAmount, 0);
-                const totalinterestAmount: number = data.results.reduce((total: number, item: any) => total + item.InterestAmount, 0);
+                const totalinterestAmount: number = data.results.reduce((total: number, item: any) => total + item.PaymentRecAmount, 0);
                 const totalRemaining: number = data.results.filter((item: any) => item.PaidStatus !== 1).reduce((total: number, item: any) => total + item.PrincipalRemaining, 0);
-                const newLoanIds: string[] = data.results.map((result: any) => result.LoanId);
+                const unpaidLoanIds: string[] = resData.filter((item: any) => item.PaidStatus === 0).map((result: any) => result.LoanId);
+                const totalprincipalpaid: number = data.results.filter((item: any) => item.PaidStatus == 1).reduce((total: number, item: any) => total + item.LoanAmount, 0);
+                const filteredId = resData.filter((item: any) => item.LoanId === id.LoanID && item.PaidStatus == 1);
+                const principalPaymentRecs: number[] = filteredId.map((item: any) => item.PrincipalPaymentRec);
+                const principalRemaining: number[] = filteredId.map((item: any) => item.PrincipalRemaining);
+                
 
-
-                setLoanIds(newLoanIds);
+                setPrincipalPaymentRecs(principalPaymentRecs);
+                setPrincipalRemaining(principalRemaining);
+                setLoanIds(unpaidLoanIds);
                 setUserInfo(resData);
-                setTotal({ totalloanamount, totalinterestAmount, totalRemaining })
+                setTotal({ totalloanamount, totalinterestAmount, totalRemaining, totalprincipalpaid })
             } catch (error) {
                 console.error("Failed to fetch data: ", error);
                 setError('Failed to fetch data');
@@ -67,7 +78,7 @@ export default function InfoModal({ id}: any) {
     const AllLoanId = `${loanIds.join(', ')}`;
 
 
-    
+
 
     return (
         <div>
@@ -94,7 +105,7 @@ export default function InfoModal({ id}: any) {
                         </tr>
                         <tr>
                             <td>Total Int. paid</td>
-                            <td>{total.totalinterestAmount}</td>
+                            <td>{total?.totalinterestAmount}</td>
                         </tr>
                         <tr>
                             <td>Remaining Principal</td>
@@ -102,7 +113,7 @@ export default function InfoModal({ id}: any) {
                         </tr>
                         <tr>
                             <td>Total Principal Paid</td>
-                            <td>{userInfo?.PaidStatus}</td>
+                            <td>{total.totalprincipalpaid}</td>
                         </tr>
                         <tr>
                             <td>Current Loans</td>
@@ -140,16 +151,16 @@ export default function InfoModal({ id}: any) {
                             <td>{id.PaymentFrequency}</td>
                         </tr>
                         <tr>
-                            <td>Total Int. Paid</td>
-                            <td>{id.InterestRate}</td>
+                            <td>Interest Payment Received</td>
+                            <td>{id.PaymentRecAmount}</td>
                         </tr>
                         <tr>
                             <td>Remaining Principal</td>
-                            <td>{id.PrincipalRemaining}</td>
+                            <td>{id.remainingPrinciple}</td>
                         </tr>
                         <tr>
                             <td>Total Principal Paid</td>
-                            <td>{id.PrinciplePaymentReceived}</td>
+                            <td>{id.Closed === true ? principalPaymentRecs : 0}</td>
                         </tr>
                     </tbody>
                 </table>
