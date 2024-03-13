@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import BaseURL from "../BaseURL"
+
 interface ClientDropdownProps {
     onSelectClient: (clientId: string) => void; // Callback function to handle client selection
 }
 
 const ClientDropdown: React.FC<ClientDropdownProps> = ({ onSelectClient }) => {
+
     const [clients, setClients] = useState<{ id: string, fullName: string }[]>([]);
     const [selectedClientId, setSelectedClientId] = useState<string>('');
 
@@ -50,7 +52,7 @@ const ClientDropdown: React.FC<ClientDropdownProps> = ({ onSelectClient }) => {
         <div>
             {/* <label htmlFor="day">Clients:</label><br /> */}
             <select value={selectedClientId} className='form-select selected-filter-1' onChange={handleDropdownChange}>
-                <option value="*">--ALL--</option> {/* Add the initial "All" option */}
+                <option value="*">--ALL--</option>
                 {clients.map((client, index) => (
                     <option key={index} value={client.id}>{client.fullName}</option>
                 ))}

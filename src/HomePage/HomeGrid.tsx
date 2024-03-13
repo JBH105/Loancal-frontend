@@ -80,12 +80,20 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
         { headerName: 'Name', field: 'Name', width: 122, autoHeaderHeight: true, filter: true, autoHeight: true, cellStyle: { 'padding-left': 4, 'border-right': '1px solid', 'border-bottom': '1px solid' }, headerClass: 'wrap-header-text' },
         { headerName: 'LX ID', field: 'LoanID', headerClass: 'thick-border', width: 122, filter: true, autoHeight: true, cellStyle: { 'padding-left': 4, 'border-right': '2px solid', 'border-bottom': '1px solid' } },
         { headerName: 'Remaining Principle', field: 'remainingPrinciple', headerClass: 'thick-border', width: 122, filter: true, autoHeight: true, cellStyle: { 'padding-left': 4, 'border-right': '2px solid', 'border-bottom': '1px solid' } },
-        { headerName: 'Principle Payment Received', field: 'PrinciplePaymentReceived', filter: true, editable: true, width: 122, cellStyle: {'padding-left': 4, 'border-right': '1px solid', 'border-left': '1px solid', 'border-bottom': '1px solid' }, headerClass: 'wrap-header-text' },
+        { headerName: 'Principle Payment Received', field: 'PrinciplePaymentReceived', filter: true, editable: true, width: 122, cellStyle: { 'padding-left': 4, 'border-right': '1px solid', 'border-left': '1px solid', 'border-bottom': '1px solid' }, headerClass: 'wrap-header-text' },
         { headerName: 'Interest Payment Due Date', autoHeaderHeight: true, field: 'DueDate', headerClass: 'wrap-header-text', width: 122, cellStyle: { 'padding-left': 4, 'border-right': '1px solid', 'border-bottom': '1px solid' }, cellDataType: 'date' },
         { headerName: 'Interest Payment Expected', autoHeaderHeight: true, field: 'PaymentDue', filter: true, width: 122, cellStyle: { 'padding-left': 4, 'border-right': '1px solid', 'border-bottom': '1px solid' }, headerClass: 'wrap-header-text' },
-        { headerName: 'Interest Payment Received', field: 'PaymentReceived', filter: true, editable: true, width: 122, cellStyle: {'padding-left': 4, 'border-right': '1px solid', 'border-left': '1px solid', 'border-bottom': '1px solid' }, headerClass: 'wrap-header-text', },
-        { headerName: 'Notes', field: 'Notes', filter: true, editable: true, width: 122, cellStyle: {'padding-left': 4, 'border-right': '1px solid', 'border-bottom': '1px solid' }, headerClass: 'wrap-header-text' },
-        { headerName: 'Interest Payment Received Date', field: 'PaymentReceivedDate', filter: true, editable: true, width: 127, cellStyle: {'padding-left': 4, 'border-right': '1px solid', 'border-bottom': '1px solid' }, cellDataType: 'date', headerClass: 'wrap-header-text', },
+        { headerName: 'Interest Payment Received', field: 'PaymentReceived', filter: true, editable: true, width: 122, cellStyle: { 'padding-left': 4, 'border-right': '1px solid', 'border-left': '1px solid', 'border-bottom': '1px solid' }, headerClass: 'wrap-header-text', },
+        { headerName: 'Notes', field: 'Notes', filter: true, editable: true, width: 122, cellStyle: { 'padding-left': 4, 'border-right': '1px solid', 'border-bottom': '1px solid' }, headerClass: 'wrap-header-text' },
+        {
+            headerName: 'Interest Payment Received Date',
+            field: 'PaymentReceivedDate', filter: true, editable: true,
+            width: 127, cellStyle: {
+                'padding-left': 4, 'border-right': '1px solid',
+                'border-bottom': '1px solid'
+            }, cellDataType: 'date',
+            headerClass: 'wrap-header-text',
+        },
         {
             headerName: 'Closed', field: 'Closed', filter: true, editable: (params) => {
                 return !(params.data.Closed || params.data.Closed === 1);
@@ -100,7 +108,6 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
     ];
 
     function maturityDate(issueDate: any, loanLength: any, paymentFreq: any) {
-        // Create a new Date object from the issueDate
         let maturityDate = new Date(issueDate);
 
         if (paymentFreq === "Monthly") {
@@ -117,6 +124,8 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
         // Return the maturity date as a string in YYYY-MM-DD format
         return maturityDate.toISOString().split('T')[0];
     }
+
+
 
     const mapApiResponseToGridFields = (apiData: any) => {
         return apiData.map((item: any) => ({
@@ -138,80 +147,78 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
             remainingPrinciple: item.PrincipalRemaining != null ? `$${item.PrincipalRemaining}` : item.PrincipalRemaining,
             Notes: item.Notes,
             PrinciplePaymentReceived: item.PrincipalPaymentRec != null ? `$${item.PrincipalPaymentRec}` : item.PrincipalPaymentRec
+
         }));
     };
 
     useEffect(() => {
-        if(!addData){
-        const fetchData = async () => {
-            try {
+        if (!addData) {
+            const fetchData = async () => {
+                try {
 
-                const apiUrl = `${BaseURL}/api/filter-data`;
-                let StatusData
+                    const apiUrl = `${BaseURL}/api/filter-data`;
+                    let StatusData
 
-                if (selectedStatus === "") {
-                    StatusData = "both"
-                }
-                // Prepare the request body
-                const requestBody = {
-                    Months: selectedMonths ? [selectedMonths] : [],
-                    Years: selectedYears ? [selectedYears] : [],
-                    ActiveStatus: selectedStatus ? selectedStatus : StatusData,  
-                    ClientId: selectedClient,
-                    TdyToggle: days,
-                    TdyDate: new Date().toISOString().split('T')[0]
-                };
-
-
-                // Make the POST request
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(requestBody)
-                });
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-
-                const apiData = await response.json();
-                
-                if (gridApi != null) {
-                    if (apiData && apiData.results) {
-                        const sortedPayments = apiData.results.sort((a: any, b: any) => {
-                            // Check paid status to group not paid and paid separately
-                            if (!a.PaidStatus && b.PaidStatus) {
-                                return -1; // a (not paid) comes before b (paid)
-                            } else if (a.PaidStatus && !b.PaidStatus) {
-                                return 1; // b (not paid) comes before a (paid)
-                            } else {
-                                // If both have the same paid status, sort by date from newest to oldest
-                                // Assuming PaymentDate is a date string or a Date object that can be compared directly
-                                const dateA: any = new Date(a.IssueDate);
-                                const dateB: any = new Date(b.IssueDate);
-                                return dateB - dateA; // Sorts descending by date
-                            }
-                        });
-                        setRowData(mapApiResponseToGridFields(sortedPayments));
+                    if (selectedStatus === "") {
+                        StatusData = "both"
                     }
-                }
+                    // Prepare the request body
+                    const requestBody = {
+                        Months: selectedMonths ? [selectedMonths] : [],
+                        Years: selectedYears ? [selectedYears] : [],
+                        ActiveStatus: selectedStatus ? selectedStatus : StatusData,
+                        ClientId: selectedClient,
+                        TdyToggle: days,
+                        TdyDate: new Date().toISOString().split('T')[0]
+                    };
 
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                // Consider setting an error state and displaying it in the UI
-            }
-        };
-        fetchData();
-    }
+
+                    // Make the POST request
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(requestBody)
+                    });
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+
+                    const apiData = await response.json();
+
+                    if (gridApi != null) {
+                        if (apiData && apiData.results) {
+                            const sortedPayments = apiData.results.sort((a: any, b: any) => {
+                                // Check paid status to group not paid and paid separately
+                                if (!a.PaidStatus && b.PaidStatus) {
+                                    return -1; // a (not paid) comes before b (paid)
+                                } else if (a.PaidStatus && !b.PaidStatus) {
+                                    return 1; // b (not paid) comes before a (paid)
+                                } else {
+                                    // If both have the same paid status, sort by date from newest to oldest
+                                    // Assuming PaymentDate is a date string or a Date object that can be compared directly
+                                    const dateA: any = new Date(a.IssueDate);
+                                    const dateB: any = new Date(b.IssueDate);
+                                    return dateB - dateA; // Sorts descending by date
+                                }
+                            });
+                            setRowData(mapApiResponseToGridFields(sortedPayments));
+                        }
+                    }
+
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                    // Consider setting an error state and displaying it in the UI
+                }
+            };
+            fetchData();
+        }
     }, [selectedMonths, selectedYears, gridApi, selectedStatus, selectedClient, updateCount, addData]);
 
     const onGridReady = useCallback((params: any) => {
         setGridApi(params.api);
     }, []);
-
-
-
 
     const handleConfirmDelete = () => {
         // Perform the update logic here using currentEdit
@@ -236,7 +243,6 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
         // You can now use nextInterestPayment as part of your update logic
 
         updatePayment(currentEdit, nextInterestPayment); // Modify updatePayment to accept this value
-
         setIsModalOpen(false);
     };
 
@@ -257,9 +263,7 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
     }, []);
 
     async function deletePayment(event: any) {
-
         const apiUrl = `${BaseURL}/api/delete-payment`;
-
         const requestBody = {
             LoanId: event.data.LoanID,
             PaymentId: event.data.PaymentId
@@ -328,14 +332,26 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
 
         } catch (error) {
             console.error('Error fetching data:', error);
-            // Consider setting an error state and displaying it in the UI
         }
 
     }
 
     function cellClicked(event: any) {
-        if (event.colDef.field === "Name" || event.colDef.field === "LoanID") {
-            setId({ ClientId: event.data.ClientId, LoanID: event.data.LoanID })
+        if (
+            event.colDef.field === "Name" ||
+            event.colDef.field === "LoanID") {
+            setId(
+                {
+                    ClientId: event.data.ClientId,
+                    LoanID: event.data.LoanID,
+                    ClientName: event.data.Name,
+                    IssueDate: event.data.Issued,
+                    LoanAmount: event.data.Principal,
+                    PaymentFrequency: event.data.PaymentFreq,
+                    Due: event.data.Due,
+                    InterestRate: event.data.InterestRate,
+                    PrincipalPaymentRec: event.data.PrincipalPaymentRec
+                })
             setOpen(true)
         }
         else if (event.colDef.field === "Delete") {
@@ -372,7 +388,9 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
                 className='loan-info'
                 style={{ minWidth: '600px' }}
                 open={open} onCancel={() => setOpen(false)}>
-                <InfoModal id={id} />
+                <InfoModal
+                    id={id}
+                />
             </Modal>
         </div>
     );

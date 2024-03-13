@@ -1,31 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import BaseURL from '../BaseURL';
+import { log } from 'util';
 
-export default function InfoModal({ id }: any) {
-    console.log("🚀 ~ InfoModal ~ id:", id)
-    const [userInfo, setUserInfo] = useState(
-        {
-            "PaymentRecAmount": null,
-            "PaidStatus": 0,
-            "PrincipalPaymentRec": null,
-            "PrincipalRemaining": 2222.0,
-            "LoanId": "LX-474379",
-            "PaymentDueDate": "2024-04-06",
-            "PaymentDueAmount": 222.0,
-            "PaymentRecDate": "2024-03-06",
-            "Notes": null,
-            "PaymentId": "b1f1a5db-d2b5-4a73-a15d-8c7bd84e5342",
-            "UpdateTime": null,
-            "ClientId": "c3a1e69b-c0fc-47c9-8932-ceac85357399",
-            "LoanAmount": 2222.0,
-            "ActiveStatus": 1,
-            "LoanLength": 2,
-            "PaymentFrequency": "Monthly",
-            "InterestAmount": 222.0,
-            "IssueDate": "2024-03-06",
-            "ClientName": "TestPayment"
-        }
-    );
+export default function InfoModal({ id}: any) {
+    const [userInfo, setUserInfo] = useState<any>(null);
+
     const [total, setTotal] = useState<{
         totalloanamount: number;
         totalinterestAmount: number;
@@ -35,7 +14,7 @@ export default function InfoModal({ id }: any) {
         totalinterestAmount: 0,
         totalRemaining: 0
     });
-
+    const [loanIds, setLoanIds] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -43,8 +22,8 @@ export default function InfoModal({ id }: any) {
         const fetchData = async () => {
             setLoading(true);
             const payload = {
-                "Months": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-                "Years": [2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034],
+                "Months": [],
+                "Years": [],
                 "ActiveStatus": "both",
                 "ClientId": id?.ClientId,
                 "TdyToggle": false,
@@ -63,12 +42,15 @@ export default function InfoModal({ id }: any) {
                 }
 
                 const data = await response.json();
-                const resData = data.results[0];
-                console.log(userInfo);
+                const resData = data.results;
 
                 const totalloanamount: number = data.results.reduce((total: number, item: any) => total + item.LoanAmount, 0);
                 const totalinterestAmount: number = data.results.reduce((total: number, item: any) => total + item.InterestAmount, 0);
-                const totalRemaining: number = data.results.filter((item:any) => item.PaidStatus !== 1).reduce((total: number, item: any) => total + item.PrincipalRemaining, 0);
+                const totalRemaining: number = data.results.filter((item: any) => item.PaidStatus !== 1).reduce((total: number, item: any) => total + item.PrincipalRemaining, 0);
+                const newLoanIds: string[] = data.results.map((result: any) => result.LoanId);
+
+
+                setLoanIds(newLoanIds);
                 setUserInfo(resData);
                 setTotal({ totalloanamount, totalinterestAmount, totalRemaining })
             } catch (error) {
@@ -78,9 +60,14 @@ export default function InfoModal({ id }: any) {
                 setLoading(false);
             }
         };
-        fetchData();
+        if (id) {
+            fetchData();
+        }
     }, [id]);
+    const AllLoanId = `${loanIds.join(', ')}`;
 
+
+    
 
     return (
         <div>
@@ -99,7 +86,7 @@ export default function InfoModal({ id }: any) {
                     <tbody>
                         <tr>
                             <td>Name</td>
-                            <td>{userInfo?.ClientName}</td>
+                            <td>{id.ClientName}</td>
                         </tr>
                         <tr>
                             <td>Total Loan Ammounts</td>
@@ -119,7 +106,7 @@ export default function InfoModal({ id }: any) {
                         </tr>
                         <tr>
                             <td>Current Loans</td>
-                            <td>{userInfo?.LoanId}</td>
+                            <td>{AllLoanId}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -134,35 +121,35 @@ export default function InfoModal({ id }: any) {
                     <tbody>
                         <tr>
                             <td>Loan ID</td>
-                            <td>{userInfo?.ClientName}</td>
+                            <td>{id.LoanID}</td>
                         </tr>
                         <tr>
                             <td>Loan Issue Date</td>
-                            <td>{userInfo?.IssueDate}</td>
+                            <td>{id.IssueDate}</td>
                         </tr>
                         <tr>
                             <td>Loan Mat Date</td>
-                            <td>{userInfo?.PaymentRecDate}</td>
+                            <td>{id.Due}</td>
                         </tr>
                         <tr>
                             <td>Total Loan Amt.</td>
-                            <td>{userInfo?.LoanAmount}</td>
+                            <td>{id.LoanAmount}</td>
                         </tr>
                         <tr>
                             <td>Payment Frequency</td>
-                            <td>{userInfo?.PaymentFrequency}</td>
+                            <td>{id.PaymentFrequency}</td>
                         </tr>
                         <tr>
                             <td>Total Int. Paid</td>
-                            <td>{userInfo?.PaidStatus}</td>
+                            <td>{id.InterestRate}</td>
                         </tr>
                         <tr>
                             <td>Remaining Principal</td>
-                            <td>{userInfo?.PrincipalRemaining}</td>
+                            <td>{id.PrincipalRemaining}</td>
                         </tr>
                         <tr>
                             <td>Total Principal Paid</td>
-                            <td>{userInfo?.PaidStatus}</td>
+                            <td>{id.PrinciplePaymentReceived}</td>
                         </tr>
                     </tbody>
                 </table>
