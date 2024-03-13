@@ -88,14 +88,19 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
         { headerName: 'Notes', field: 'Notes', filter: true, editable: true, width: 122, cellStyle: { 'padding-left': 4, 'border-right': '1px solid', 'border-bottom': '1px solid' }, headerClass: 'wrap-header-text' },
         {
             headerName: 'Interest Payment Received Date',
-            field: 'PaymentReceivedDate', filter: true, editable: true,
-            width: 127, cellStyle: {
-                'padding-left': 4, 'border-right': '1px solid',
+            field: 'PaymentReceivedDate',
+            filter: true,
+            editable: true,
+            width: 127,
+            cellStyle: {
+                'padding-left': 4,
+                'border-right': '1px solid',
                 'border-bottom': '1px solid'
-            }, cellDataType: 'date',
+            },
+            cellDataType: 'date',
             headerClass: 'wrap-header-text',
-            onCellDoubleClicked: handlePaymentReceivedDateDoubleClick
-        },
+            onCellDoubleClicked: handlePaymentReceivedDateDoubleClick 
+        },        
         {
             headerName: 'Closed', field: 'Closed', filter: true, editable: (params) => {
                 return !(params.data.Closed || params.data.Closed === 1);
@@ -129,8 +134,6 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
         params.data.PaymentReceivedDate = currentDate;
         params.api.applyTransaction({ update: [params.data] });
     }
-
-
 
     const mapApiResponseToGridFields = (apiData: any) => {
         return apiData.map((item: any) => ({
@@ -178,7 +181,6 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
                         TdyDate: new Date().toISOString().split('T')[0]
                     };
 
-
                     // Make the POST request
                     const response = await fetch(apiUrl, {
                         method: 'POST',
@@ -213,7 +215,6 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
 
                 } catch (error) {
                     console.error('Error fetching data:', error);
-                    // Consider setting an error state and displaying it in the UI
                 }
             };
             fetchData();
@@ -277,11 +278,6 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         else { setUpdateCount(updateCount => updateCount + 1) }
-
-
-
-
-
     }
 
     async function updatePayment(event: any, newExpectedPayment: any) {
@@ -328,6 +324,7 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
     }
 
     function cellClicked(event: any) {
+
         if (
             event.colDef.field === "Name" ||
             event.colDef.field === "LoanID") {
@@ -343,7 +340,7 @@ function HomeGrid({ selectedClient, selectedMonths, days, selectedYears, selecte
                     Due: event.data.Due,
                     InterestRate: event.data.InterestRate,
                     remainingPrinciple: event.data.remainingPrinciple,
-                    PaymentRecAmount:event.data.PaymentRecAmount,
+                    PaymentRecAmount:event.data.PaymentReceived,
                 
                 })
             setOpen(true)

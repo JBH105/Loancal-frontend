@@ -3,9 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import HomeGrid from "./HomeGrid";
 
-import MonthButtons from './MonthsButton';
-import YearButtons from './YearButtons';
-import StatusButtons from './StatusButtons';
 import ClientDropdown from './ClientDropdown';
 import Filter from '../components/Filter';
 import { Modal } from 'antd';
@@ -17,18 +14,16 @@ const day = [{ name: "All", value: 'false' }, { name: "Today", value: "true" }];
 
 function HomePage() {
     const navigate = useNavigate();
-    const [selectedClient, setSelectedClient] = useState("*"); // State ,to store the selected client
+    const [selectedClient, setSelectedClient] = useState("*"); 
     const [selectedMonths, setSelectedMonths] = useState('');
     const [selectedYears, setSelectedYears] = useState('');
-    // const [selectedMonths, setSelectedMonths] = useState(Array(12).fill(true));
-    // const [selectedYears, setSelectedYears] = useState(Array(11).fill(true));
+
     const [selectedstatuss, setSelectedstatuss] = useState('');
     const [allToggle, setAllToggle] = useState(true)
     const [tdyToggle, setTdyToggle] = useState(false)
     const [days, setDays] = useState(false)
     const [addData, setAddData] = useState(false)
 
-    // This function is responsible for navigation to the NewRecord page
     const NewRecordnav = () => {
         setAddData(true)
     };

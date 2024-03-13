@@ -3,6 +3,7 @@ import BaseURL from '../BaseURL';
 import { log } from 'util';
 
 export default function InfoModal({ id }: any) {
+    console.log("🚀 ~ InfoModal ~ id:", id)
     const [userInfo, setUserInfo] = useState<any>(null);
     const [total, setTotal] = useState<{
         totalloanamount: number;
@@ -48,11 +49,12 @@ export default function InfoModal({ id }: any) {
                 const data = await response.json();
                 const resData = data.results;
 
-                const totalloanamount: number = data.results.reduce((total: number, item: any) => total + item.LoanAmount, 0);
-                const totalinterestAmount: number = data.results.reduce((total: number, item: any) => total + item.PaymentRecAmount, 0);
+                const totalloanamount: number = data.results.filter((item: any) => item.PaidStatus !== 1).reduce((total: number, item: any) => total + item.LoanAmount, 0);
+                const totalinterestAmount: number = data.results.filter((item: any) => item.PaidStatus === 1).reduce((total: number, item: any) => total + item.PaymentRecAmount, 0);
                 const totalRemaining: number = data.results.filter((item: any) => item.PaidStatus !== 1).reduce((total: number, item: any) => total + item.PrincipalRemaining, 0);
+                const totalprincipalpaid: number = data.results.filter((item: any) => item.PaidStatus === 1).reduce((total: number, item: any) => total + item.PrincipalPaymentRec, 0);
+                
                 const unpaidLoanIds: string[] = resData.filter((item: any) => item.PaidStatus === 0).map((result: any) => result.LoanId);
-                const totalprincipalpaid: number = data.results.filter((item: any) => item.PaidStatus == 1).reduce((total: number, item: any) => total + item.LoanAmount, 0);
 
                 const filteredId = resData.filter((item: any) => item.LoanId === id.LoanID && item.PaidStatus == 1);
                 const principalPaymentRecs: number[] = filteredId.map((item: any) => item.PrincipalPaymentRec);
@@ -63,7 +65,7 @@ export default function InfoModal({ id }: any) {
                 setPrincipalRemaining(principalRemaining);
                 setLoanIds(unpaidLoanIds);
                 setUserInfo(resData);
-                console.log(totalloanamount, totalinterestAmount, totalRemaining, totalprincipalpaid );
+                console.log(totalloanamount, totalinterestAmount, totalRemaining, totalprincipalpaid);
                 setTotal({ totalloanamount, totalinterestAmount, totalRemaining, totalprincipalpaid })
             } catch (error) {
                 console.error("Failed to fetch data: ", error);
@@ -153,7 +155,7 @@ export default function InfoModal({ id }: any) {
                         </tr>
                         <tr>
                             <td>Interest Payment Received</td>
-                            <td>{id.InterestRate}</td>
+                            <td>{id.PaymentRecAmount || 0}</td>
                         </tr>
 
                         <tr>
